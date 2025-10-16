@@ -1,2 +1,3 @@
-# illuminati_service_go
+# README
+
 This repo created by Terraform
