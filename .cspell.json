@@ -1,6 +1,6 @@
 {
   "version": "0.2",
   "language": "en",
-  "words": ["wneessen"],
+  "words": ["mailtest", "wneessen"],
   "ignorePaths": ["**/go.mod", "**/go.sum"]
 }
