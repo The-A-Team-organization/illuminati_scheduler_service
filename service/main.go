@@ -1,22 +1,41 @@
 package main
 
 import (
-	"service/mailer"
-	"service/scheduler"
+	"fmt"
+	"os"
+
+	"github.com/wneessen/go-mail"
 )
 
 func main() {
-	
-	// Example cron expression: "0 9 * * *" runs daily at 9:00 AM
-	//scheduler.StartCron("0 9 * * *", mailer.SendWordEmail)
+	username := ""
+	password := ""
+	to       := ""
+	client, err := mail.NewClient("smtp.gmail.com", mail.WithTLSPortPolicy(mail.TLSMandatory),
+		mail.WithSMTPAuth(mail.SMTPAuthAutoDiscover), mail.WithUsername(username), mail.WithPassword(password))	
+	if err != nil {
+		fmt.Printf("failed to create mail client: %s\n", err)
+		os.Exit(1)
+	}
 
-	//  run every 20 minutes
-	scheduler.StartCron("@every 20m", mailer.SendWordEmail)
+        msg := mail.NewMsg()
+        msg.Subject("Word of the Day")
 
-	// Start the HTTP server for manual triggering
-	// Access via: http://localhost:8080/trigger
-	scheduler.StartHTTPServer(mailer.SendWordEmail)
+       body := `Hello,
 
-	// Keep the main thread alive so cron and HTTP server continue running
-	select {}
+You’re subscribed to our English vocabulary service, and today’s Word of the Day is corruption.
+
+Learn its meaning, usage, and examples to expand your vocabulary!
+
+Happy learning,
+— The English Words Team
+`
+        msg.SetBodyString(mail.TypeTextPlain, body)
+
+        msg.From(username)
+	msg.To(to)
+	if err = client.DialAndSend(msg); err != nil {
+		fmt.Printf("failed to send mail: %s\n", err)
+		os.Exit(1)
+	}
 }
