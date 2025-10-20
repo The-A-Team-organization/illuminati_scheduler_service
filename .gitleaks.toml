@@ -1,0 +1,5 @@
+[[rules]]
+id = "hardcoded-password"
+description = "Hardcoded password"
+regex = '''password\s*[:=]\s*["'].*["']'''
+tags = ["password"]
