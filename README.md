@@ -46,7 +46,7 @@ Copy the example file and fill in your own data:
 
 ```bash
 cd mock
-cp participants.json.example participants.json
+cp expectation.json.example expectation.json
 ```
 
 ---

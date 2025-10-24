@@ -1,6 +1,7 @@
 package mailer
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -10,12 +11,15 @@ import (
 
 	"github.com/XANi/loremipsum"
 	"github.com/wneessen/go-mail"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 var (
 	 username = os.Getenv("EMAIL_USERNAME") 
 	 password = os.Getenv("EMAIL_PASSWORD")
      mockURL  = os.Getenv("MOCK_URL")
+	 setSecretURL  = os.Getenv("SET_SECRET_URL")
 )
 
 func getRandomWord() string {
@@ -25,9 +29,43 @@ func getRandomWord() string {
 
 }
 
-func SendWordEmail() {
-	word := getRandomWord() 
+func sendPassword(url, password string) error {
 	
+	hashed, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+
+
+
+	
+	payload := map[string]string{
+		"password": string(hashed),
+	}
+	data, err := json.Marshal(payload)
+	if err != nil {
+		return err
+	}
+
+	
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(data))
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+    log.Println(password)
+	log.Println("Response status:", resp.Status)
+	return nil
+}
+
+func SendWordEmail() {
+	word := getRandomWord()
+	
+
+    if err := sendPassword(setSecretURL, word); err != nil {
+	 	log.Fatal(err)
+	 }
+
 	resp, err  := http.Get(mockURL)
 	defer resp.Body.Close()
 	

@@ -2,6 +2,6 @@
 # Ignore environment variables
 .env
 # Ignore mock expectation data
-mock/participants.json
+mock/expectation.json
 go.sum
 go.mod

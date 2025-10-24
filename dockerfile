@@ -1,15 +1,17 @@
 FROM golang:1.25-alpine AS builder
+
 WORKDIR /app
+COPY . . 
 RUN go mod init service \
-    &&go get github.com/robfig/cron/v3 \
+    && go get github.com/robfig/cron/v3 \
     && go get github.com/wneessen/go-mail \
     && go get github.com/XANi/loremipsum \
+    && go get golang.org/x/crypto/bcrypt \
     && go mod tidy
 
-COPY . .
 
 RUN go build -o main .
-# Final stage
+
 FROM alpine:latest
 
 WORKDIR /app

@@ -1,0 +1,29 @@
+[
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/set/",
+      "body": {
+        "type": "JSON",
+        "json": {},
+        "matchType": "ONLY_MATCHING_FIELDS"
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "body": "Password received"
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/participants"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "body": "{\"participants\": [\"alexyeyev@gmail.com\",\"alexyeyev2018@gmail.com\"]}",
+      "headers": [{ "name": "Content-Type", "values": ["application/json"] }]
+    },
+    "times": { "unlimited": true }
+  }
+]
