@@ -19,8 +19,10 @@ jobs:
           go get github.com/robfig/cron/v3 
           go get github.com/wneessen/go-mail 
           go get github.com/XANi/loremipsum 
-          go get golang.org/x/crypto/bcrypt 
+          go get golang.org/x/crypto/bcrypt
+          go get golang.org/x/tools/cmd/cover
           go mod tidy
+          go test -coverprofile coverage.out -json > report.json
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
@@ -29,6 +31,7 @@ jobs:
           args: >-
             -Dsonar.projectKey=illuminati_service_go
             -Dsonar.sources=.
+            -Dsonar.test.inclusions=**/*_test.go
             -Dsonar.exclusions=./**/vendor/**,./**/testdata/*,jenkinsfile,.cspell.json
             -Dsonar.coverage.exclusions=./**/*_test.go
             -Dsonar.go.coverage.reportPaths=bin/cov.out
