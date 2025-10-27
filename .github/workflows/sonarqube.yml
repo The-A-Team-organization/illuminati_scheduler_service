@@ -29,7 +29,7 @@ jobs:
           args: >-
             -Dsonar.projectKey=illuminati_service_go
             -Dsonar.sources=.
-            -Dsonar.exclusions=./**/vendor/**,./**/testdata/*,jenkinsfile
+            -Dsonar.exclusions=./**/vendor/**,./**/testdata/*,jenkinsfile,.cspell.json
             -Dsonar.coverage.exclusions=./**/*_test.go
             -Dsonar.tests=.
             -Dsonar.test.exclusions=./**/vendor/**
