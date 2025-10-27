@@ -14,8 +14,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run go init
-        run:  go init mod . \
-              go mod tidy
+        run:  go init mod . && go mod tidy
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
