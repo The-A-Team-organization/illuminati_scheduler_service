@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -26,9 +27,9 @@ func GetRandomWord() string {
 
 }
 
-func GetAppParticipants() ([]string, error) {
+func GetAppParticipants(url string) ([]string, error) {
 
-	resp, err  := http.Get(mockURL)
+	resp, err  := http.Get(url)
 	if err != nil {
 		fmt.Println("SOME TEXT:", err)
 		return nil, err
@@ -45,7 +46,11 @@ func GetAppParticipants() ([]string, error) {
 	return data.participants, nil
 }
 
-func SendWordEmail(word string, participants []string) {
+func SendWordEmail(word string, participants []string) error{
+
+	if(word == "") {
+		return errors.New("the word field is blank")
+	}
 
 	client, err := mail.NewClient(
 		"smtp.gmail.com",
@@ -56,7 +61,7 @@ func SendWordEmail(word string, participants []string) {
 	)
 	if err != nil {
 		fmt.Println("Failed to create mail client:", err)
-		return
+		return err
 	}
 
 	msg := mail.NewMsg()
@@ -81,9 +86,11 @@ func SendWordEmail(word string, participants []string) {
 
 		if err := client.DialAndSend(msg); err != nil {
 			fmt.Println("Failed to send mail:", err)
-			return
+			return err
 		}
 
 		log.Println("Email sent successfully!")
 	}
+
+	return nil
 }
