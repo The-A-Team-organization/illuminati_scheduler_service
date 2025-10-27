@@ -31,8 +31,6 @@ jobs:
             -Dsonar.sources=.
             -Dsonar.exclusions=./**/vendor/**,./**/testdata/*,jenkinsfile,.cspell.json
             -Dsonar.coverage.exclusions=./**/*_test.go
-            -Dsonar.tests=.
-            -Dsonar.test.exclusions=./**/vendor/**
             -Dsonar.go.coverage.reportPaths=bin/cov.out
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
