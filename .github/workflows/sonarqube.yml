@@ -26,7 +26,6 @@ jobs:
             -Dsonar.sources=.
             -Dsonar.coverage.exclusions=**/*_test.go,**/vendor/**,**/testdata/*
             -Dsonar.tests=.
-            -Dsonar.test.inclusions=**/*_test.go
             -Dsonar.test.exclusions=**/vendor/**
             -Dsonar.go.coverage.reportPaths=bin/cov.out
         env:
