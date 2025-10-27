@@ -14,12 +14,13 @@ jobs:
           fetch-depth: 0
 
       - name: Run go mod init
-        run:  go mod init illuminati/go/microservice \
-               go get github.com/robfig/cron/v3 \
-               go get github.com/wneessen/go-mail \
-               go get github.com/XANi/loremipsum \
-               go get golang.org/x/crypto/bcrypt \
-               go mod tidy
+        run: |
+              go mod init illuminati/go/microservice 
+              go get github.com/robfig/cron/v3 
+              go get github.com/wneessen/go-mail 
+              go get github.com/XANi/loremipsum 
+              go get golang.org/x/crypto/bcrypt 
+              go mod tidy
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
