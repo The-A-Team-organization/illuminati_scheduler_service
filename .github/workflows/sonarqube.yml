@@ -30,7 +30,7 @@ jobs:
             -Dsonar.projectKey=illuminati_service_go
             -Dsonar.sources=.
             -Dsonar.exclusions=./**/vendor/**,./**/testdata/*,jenkinsfile
-            -Dsonar.coverage.exclusions=./**/*_test.go,./**/vendor/**,./**/testdata/*
+            -Dsonar.coverage.exclusions=./**/*_test.go
             -Dsonar.tests=.
             -Dsonar.test.exclusions=./**/vendor/**
             -Dsonar.go.coverage.reportPaths=bin/cov.out
