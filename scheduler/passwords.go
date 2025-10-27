@@ -10,7 +10,7 @@ import (
 func newPassword(){
 
 	newWord := service.GetRandomWord()
-	participants, _ := service.GetAppParticipants()
+	participants, _ := service.GetAppParticipants("/partisipants")
 	service.SendWordEmail(newWord,participants)
 	hashed, err := utils.HashPassword(newWord)
 	if err != nil {
