@@ -27,7 +27,7 @@ jobs:
         continue-on-error: false
         with:
           args: >-
-            -Dsonar.projectKey=
+            -Dsonar.projectKey=illuminati_service_go
             -Dsonar.sources=.
             -Dsonar.coverage.exclusions=**/*_test.go,**/vendor/**,**/testdata/*
             -Dsonar.tests=.
