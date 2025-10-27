@@ -1,4 +1,4 @@
-package mailer
+package service
 
 import (
 	"strings"
@@ -6,7 +6,7 @@ import (
 )
 
 func TestGetRandomWord(t *testing.T) {
-    word := getRandomWord()
+    word := GetRandomWord()
     if strings.TrimSpace(word) == "" {
         t.Error("Expected non-empty word")
     }
