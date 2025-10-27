@@ -2,7 +2,7 @@ FROM golang:1.25-alpine AS builder
 
 WORKDIR /app
 COPY . . 
-RUN go mod init service \
+RUN go mod init illuminati/go/microservice \
     && go get github.com/robfig/cron/v3 \
     && go get github.com/wneessen/go-mail \
     && go get github.com/XANi/loremipsum \
