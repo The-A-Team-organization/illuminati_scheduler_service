@@ -22,7 +22,7 @@ jobs:
           go get golang.org/x/crypto/bcrypt
           go get golang.org/x/tools/cmd/cover
           go mod tidy
-          go test -coverprofile coverage.out -json > report.json
+          go test -coverprofile=coverage.out ./**/
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
@@ -34,7 +34,7 @@ jobs:
             -Dsonar.test.inclusions=**/*_test.go
             -Dsonar.exclusions=./**/vendor/**,./**/testdata/*,jenkinsfile,.cspell.json
             -Dsonar.coverage.exclusions=./**/*_test.go
-            -Dsonar.go.coverage.reportPaths=bin/cov.out
+            -Dsonar.go.coverage.reportPaths=coverage.out
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
