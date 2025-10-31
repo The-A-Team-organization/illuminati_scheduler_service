@@ -14,5 +14,5 @@ func main() {
 
     c.Start()
 
-    select {} // щоб програма не завершилась
+    select {} 
 }
