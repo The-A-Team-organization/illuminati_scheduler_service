@@ -17,11 +17,6 @@ jobs:
         run: |
           go mod init illuminati/go/microservice 
           go get github.com/robfig/cron/v3 
-          go get github.com/wneessen/go-mail 
-          go get github.com/XANi/loremipsum 
-          go get golang.org/x/crypto/bcrypt
-          go get golang.org/x/tools/cmd/cover
-          go get github.com/jarcoal/httpmock;
           go mod tidy
           go test -coverprofile=coverage.out ./**/
 
