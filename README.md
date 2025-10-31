@@ -1,70 +1,18 @@
-## How to run this docker
+# Illuminati Scheduler Service
 
-# E-mail Service with scheduler and manual trigger
-
-This project sends emails using Gmail SMTP and includes a MockServer setup for local testing.
+This microservice periodically calls specific backend API endpoints via HTTP requests according to a schedule, using the [`robfig/cron`](https://github.com/robfig/cron) library.
 
 ---
 
-## How to Run
+## Functionality
 
-### 1. Prerequisites
+Currently, the main task implemented:
 
-Before starting, make sure you have:
-
-- Docker and Docker Compose installed
-- A Google account with 2-Step Verification enabled
-- Access to App Passwords (required for Gmail SMTP)
+- `CloseVotes` — sends a `POST` request to the backend at `http://host.docker.internal:8000/api/votes/vote_close`  
+  with the parameter `DateOfEnd` in the format `YYYY-MM-DD HH:MM:SS`.
 
 ---
 
-### 2. Generate a Gmail App Password
+## TODO
 
-1. Go to [Google Account → Security → App passwords](https://myaccount.google.com/apppasswords)
-2. Log in and verify your account
-3. Choose "Mail" as the app and "Other" (for example, `DockerMailer`)
-4. Copy the generated App Password — you will need it later
-
-> Note: Regular Gmail passwords will not work. You must use the App Password.
-
----
-
-### 3. Configure Environment Variables
-
-Copy the example environment file and fill in your own secrets:
-
-```bash
-cp .env.example .env
-```
-
----
-
-### 4. Create MockServer Expectations
-
-Change directory to `mock` in your project.  
-Copy the example file and fill in your own data:
-
-```bash
-cd mock
-cp expectation.json.example expectation.json
-```
-
----
-
-### 5. Run Docker Compose Configuration
-
-This configuration builds and runs:
-The Go email service container.
-The MockServer container for testing.
-
-```bash
-docker-compose up --build
-```
-
-### 6. Verify Everything is Running
-
-Open (http://127.0.0.1:1080/mockserver/dashboard) to view the MockServer dashboard
-
-Trigger an email manually using the service endpoint (http://localhost:8080/trigger), or wait for the scheduler to send automatically
-
-Check your terminal logs to see the email sending process
+Add other endpoints (SetInquisitor, NewPassword)
