@@ -15,4 +15,4 @@ Currently, the main task implemented:
 
 ## TODO
 
-Add other endpoints (SetInquisitor, NewPassword)
+Add other endpoints (SetInquisitor, NewPassword)!

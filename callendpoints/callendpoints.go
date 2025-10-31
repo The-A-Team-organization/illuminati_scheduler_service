@@ -9,7 +9,7 @@ import (
 )
 
 const (
-    BackendURL         = "http://host.docker.internal:8000"
+    BackendURL         = "http://backend:8000"
     EndpointVotesClose = "/api/votes/vote_close"
 )
 
