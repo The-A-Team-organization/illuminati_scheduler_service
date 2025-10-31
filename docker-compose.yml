@@ -3,25 +3,4 @@
 services:
   docker_go:
     build: .
-    container_name: container_go
-    env_file: .env
-    ports:
-      - "8080:8080"
-
-    environment:
-      # - TZ=Europe/Kyiv
-      #- MOCK_URL=http://mockserver:1080/participants
-      - MOCK_URL=http://localhost:8000/api/participants
-      - SET_SECRET_URL=http://localhost:8000/set/
-    depends_on:
-      - mockserver
-
-  mockserver:
-    image: mockserver/mockserver
-    container_name: mockserver
-    ports:
-      - "1080:1080"
-    volumes:
-      - ./mock/expectation.json:/tmp/expectation.json
-    environment:
-      - MOCKSERVER_INITIALIZATION_JSON_PATH=/tmp/expectation.json
+    container_name: container_scheduler
