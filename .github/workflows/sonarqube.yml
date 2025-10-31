@@ -25,7 +25,7 @@ jobs:
         continue-on-error: false
         with:
           args: >-
-            -Dsonar.projectKey=illuminati_service_go
+            -Dsonar.projectKey=illuminati_scheduler_service
             -Dsonar.sources=.
             -Dsonar.test.inclusions=**/*_test.go
             -Dsonar.exclusions=./**/vendor/**,./**/testdata/*,jenkinsfile,.cspell.json
