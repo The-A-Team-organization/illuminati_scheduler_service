@@ -47,7 +47,7 @@ func mockHTTPClient(statusCode int) func(*http.Client, *http.Request) (*http.Res
 }
 
 func TestSetInquisitor_Success(t *testing.T) {
-	httpClientDo = mockHTTPClient(200)
+	httpClientDo = mockHTTPClient(204)
 	SetInquisitor()
 }
 
