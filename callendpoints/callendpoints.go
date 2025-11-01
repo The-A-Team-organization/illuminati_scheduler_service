@@ -9,8 +9,9 @@ import (
 )
 
 var (
-	BackendURL         = "http://backend:8000"
+	BackendURL         = "http://host.docker.internal:8000"
 	EndpointVotesClose = "/api/votes/vote_close/"
+    EndpointManageInq  = "/api/votes/manage_inquisitor/"
 
 	
 	httpNewRequest = http.NewRequest
@@ -19,22 +20,69 @@ var (
 	}
 )
 
-func CloseVotes() {
-	url := BackendURL + EndpointVotesClose
+// func CloseVotes() {
+// 	url := BackendURL + EndpointVotesClose
 
+// 	payload := map[string]string{
+// 		"date_of_end": time.Now().Format("2006-01-02 15:04:05"),
+// 	}
+
+// 	body, err := json.Marshal(payload)
+// 	if err != nil {
+// 		log.Printf("Error marshalling payload: %v", err)
+// 		return
+// 	}
+
+// 	req, err := httpNewRequest(http.MethodPatch, url, bytes.NewBuffer(body))
+// 	if err != nil {
+// 		log.Printf("Error creating request: %v", err)
+// 		return
+// 	}
+// 	req.Header.Set("Content-Type", "application/json")
+
+// 	client := &http.Client{Timeout: 10 * time.Second}
+// 	resp, err := httpClientDo(client, req)
+// 	if err != nil {
+// 		log.Printf("Error calling %s: %v", url, err)
+// 		return
+// 	}
+// 	defer resp.Body.Close()
+
+// 	log.Printf("Called %s - Status: %s, Timestamp: %s", url, resp.Status, payload["date_of_end"])
+// }
+
+func CloseVotes() {
 	payload := map[string]string{
 		"date_of_end": time.Now().Format("2006-01-02 15:04:05"),
 	}
+	callEndpoint(http.MethodPatch, BackendURL+EndpointVotesClose, payload)
+}
 
-	body, err := json.Marshal(payload)
-	if err != nil {
-		log.Printf("Error marshalling payload: %v", err)
-		return
+
+func SetInquisitor() {
+	callEndpoint(http.MethodPatch, BackendURL+EndpointManageInq, nil)
+}
+
+func UnsetInquisitor() {
+	callEndpoint(http.MethodDelete, BackendURL+EndpointManageInq, nil)
+}
+
+func callEndpoint(method, url string, bodyData interface{}) {
+	var body *bytes.Buffer
+	if bodyData != nil {
+		jsonBody, err := json.Marshal(bodyData)
+		if err != nil {
+			log.Printf("Error marshalling body: %v", err)
+			return
+		}
+		body = bytes.NewBuffer(jsonBody)
+	} else {
+		body = bytes.NewBuffer(nil)
 	}
 
-	req, err := httpNewRequest(http.MethodPatch, url, bytes.NewBuffer(body))
+	req, err := httpNewRequest(method, url, body)
 	if err != nil {
-		log.Printf("Error creating request: %v", err)
+		log.Printf("Error creating %s request: %v", method, err)
 		return
 	}
 	req.Header.Set("Content-Type", "application/json")
@@ -47,5 +95,5 @@ func CloseVotes() {
 	}
 	defer resp.Body.Close()
 
-	log.Printf("Called %s - Status: %s, Timestamp: %s", url, resp.Status, payload["date_of_end"])
+	log.Printf("Called %s %s - Status: %s", method, url, resp.Status)
 }

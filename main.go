@@ -7,12 +7,18 @@ import (
 )
 
 func main() {
-    c := cron.New()
-    
-    
-    c.AddFunc("@every 10s", func() { callendpoints.CloseVotes() })
+   	c := cron.New()
 
-    c.Start()
+	
+	c.AddFunc("@hourly", func() { callendpoints.CloseVotes() })
 
-    select {} 
+	
+	c.AddFunc("@daily", func() { callendpoints.SetInquisitor() })
+
+	
+	c.AddFunc("0 20 * * *", func() { callendpoints.UnsetInquisitor() })
+
+	c.Start()
+
+	select {}
 }

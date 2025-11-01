@@ -10,9 +10,11 @@ import (
 	"time"
 )
 
-
 func TestCloseVotes_Success(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPatch {
+			t.Errorf("expected PATCH, got %s", r.Method)
+		}
 		w.WriteHeader(http.StatusOK)
 	}))
 	defer server.Close()
@@ -23,7 +25,6 @@ func TestCloseVotes_Success(t *testing.T) {
 
 	CloseVotes()
 }
-
 
 func TestCloseVotes_ServerError(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -38,17 +39,12 @@ func TestCloseVotes_ServerError(t *testing.T) {
 	CloseVotes()
 }
 
-
 func TestCloseVotes_NetworkError(t *testing.T) {
 	orig := BackendURL
 	defer func() { BackendURL = orig }()
 	BackendURL = "http://invalid_host"
-
 	CloseVotes()
 }
-
-
-
 
 func TestCloseVotes_NewRequestError(t *testing.T) {
 	orig := httpNewRequest
@@ -56,10 +52,8 @@ func TestCloseVotes_NewRequestError(t *testing.T) {
 		return nil, errors.New("request error")
 	}
 	defer func() { httpNewRequest = orig }()
-
 	CloseVotes()
 }
-
 
 func TestCloseVotes_ClientDoError(t *testing.T) {
 	orig := httpClientDo
@@ -81,7 +75,6 @@ func TestCloseVotes_ClientDoError(t *testing.T) {
 }
 
 func TestCloseVotesTimestampFormat(t *testing.T) {
-	
 	payload := map[string]string{
 		"date_of_end": time.Now().Format("2006-01-02 15:04:05"),
 	}
@@ -105,4 +98,34 @@ func TestCloseVotesTimestampFormat(t *testing.T) {
 		t.Error("expected JSON payload not to be empty")
 	}
 	CloseVotes()
+}
+
+
+
+func mockHTTPClient(statusCode int) func(*http.Client, *http.Request) (*http.Response, error) {
+	return func(client *http.Client, req *http.Request) (*http.Response, error) {
+		rec := httptest.NewRecorder()
+		rec.WriteHeader(statusCode)
+		return rec.Result(), nil
+	}
+}
+
+func TestSetInquisitor_Success(t *testing.T) {
+	httpClientDo = mockHTTPClient(204)
+	SetInquisitor()
+}
+
+func TestUnsetInquisitor_Success(t *testing.T) {
+	httpClientDo = mockHTTPClient(200)
+	UnsetInquisitor()
+}
+
+func TestCallEndpoint_ErrorRequest(t *testing.T) {
+	httpNewRequest = func(method, url string, body io.Reader) (*http.Request, error) {
+		return nil, io.EOF
+	}
+	defer func() {
+		httpNewRequest = http.NewRequest
+	}()
+	callEndpoint(http.MethodPatch, "bad-url", nil)
 }
