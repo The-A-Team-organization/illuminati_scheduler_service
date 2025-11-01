@@ -51,7 +51,7 @@ jobs:
             -Dsonar.projectKey=illuminati_scheduler
             -Dsonar.sources=.
             -Dsonar.test.inclusions=**/*_test.go
-            -Dsonar.exclusions=./**/vendor/**,./**/testdata/*,jenkinsfile,.cspell.json,**/routes.go
+            -Dsonar.exclusions=jenkinsfile,.cspell.json
             -Dsonar.coverage.exclusions=./**/*_test.go,main.go
             -Dsonar.go.coverage.reportPaths=coverage.out
         env:
