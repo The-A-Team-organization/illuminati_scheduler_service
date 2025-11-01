@@ -1,0 +1,40 @@
+name: sonarqube
+
+on: push
+
+jobs:
+  build:
+    name: Build and analyze
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run go mod init
+        run: |
+          go mod init illuminati/go/microservice 
+          go get github.com/robfig/cron/v3 
+          go mod tidy
+          go test -coverprofile=coverage.out ./**/
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        continue-on-error: false
+        with:
+          args: >-
+            -Dsonar.projectKey=illuminati_scheduler
+            -Dsonar.sources=.
+            -Dsonar.test.inclusions=**/*_test.go
+            -Dsonar.exclusions=./**/vendor/**,./**/testdata/*,jenkinsfile,.cspell.json
+            -Dsonar.coverage.exclusions=./**/*_test.go
+            -Dsonar.go.coverage.reportPaths=coverage.out
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      - uses: SonarSource/sonarqube-quality-gate-action@v1
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

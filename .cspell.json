@@ -1,0 +1,6 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": ["robfig", "callendpoints"],
+  "ignorePaths": ["**/go.mod", "**/go.sum"]
+}

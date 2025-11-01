@@ -1,0 +1,6 @@
+# version: "3.9"
+
+services:
+  docker_go:
+    build: .
+    container_name: container_scheduler

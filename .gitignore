@@ -1,0 +1,7 @@
+**/*.tfstate
+# Ignore environment variables
+.env
+# Ignore mock expectation data
+mock/expectation.json
+go.sum
+go.mod
