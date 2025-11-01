@@ -1,9 +1,32 @@
 name: sonarqube
 
-on: push
+on:
+  workflow_dispatch:
+  push:
 
 jobs:
+  trigger:
+    name: Trigger main workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger another workflow
+        if: github.ref != 'refs/heads/main'
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: sonarqube.yml
+          token: ${{ secrets.GH_TOKEN }}
+          repo: The-A-Team-organization/illuminati_scheduler_service
+          ref: main
+      - name: Wait 1m
+        if: github.ref != 'refs/heads/main'
+        uses: GuillaumeFalourd/wait-sleep-action@v1
+        with:
+          time: "1m"
+      - name: Success
+        run: echo Success
+
   build:
+    needs: trigger
     name: Build and analyze
     runs-on: ubuntu-latest
 
@@ -28,8 +51,8 @@ jobs:
             -Dsonar.projectKey=illuminati_scheduler
             -Dsonar.sources=.
             -Dsonar.test.inclusions=**/*_test.go
-            -Dsonar.exclusions=./**/vendor/**,./**/testdata/*,jenkinsfile,.cspell.json
-            -Dsonar.coverage.exclusions=./**/*_test.go
+            -Dsonar.exclusions=jenkinsfile,.cspell.json
+            -Dsonar.coverage.exclusions=./**/*_test.go,main.go
             -Dsonar.go.coverage.reportPaths=coverage.out
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
