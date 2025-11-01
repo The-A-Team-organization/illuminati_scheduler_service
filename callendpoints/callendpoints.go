@@ -13,6 +13,7 @@ var (
 	EndpointVotesClose = "/api/votes/vote_close/"
     EndpointManageInq  = "/api/votes/manage_inquisitor/"
     EndpointBanArchitect = "/api/votes/ban_architect/"
+    EndpointEntryPassword = "/api/entry_password/"
 
 
 	
@@ -41,6 +42,10 @@ func UnsetInquisitor() {
 
 func BanArchitect() {
 	callEndpoint(http.MethodDelete, BackendURL+EndpointBanArchitect, nil)
+}
+
+func NewEntryPassword() {
+	callEndpoint(http.MethodPost, BackendURL+EndpointEntryPassword, nil)
 }
 
 func callEndpoint(method, url string, bodyData interface{}) {

@@ -61,6 +61,10 @@ func TestBanArchitect_Success(t *testing.T) {
 	BanArchitect()
 }
 
+func TestNewEntryPassword_Success(t *testing.T) {
+	httpClientDo = mockHTTPClient(200)
+	NewEntryPassword()
+}
 
 func TestCloseVotes_Success(t *testing.T) {
 	httpClientDo = mockHTTPClient(200)
