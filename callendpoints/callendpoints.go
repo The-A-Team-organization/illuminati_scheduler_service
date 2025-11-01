@@ -69,16 +69,16 @@ func UnsetInquisitor() {
 
 func callEndpoint(method, url string, bodyData interface{}) {
 	var body *bytes.Buffer
-	if bodyData != nil {
+	// if bodyData != nil {
 		jsonBody, err := json.Marshal(bodyData)
 		if err != nil {
 			log.Printf("Error marshalling body: %v", err)
 			return
 		}
 		body = bytes.NewBuffer(jsonBody)
-	} else {
-		body = bytes.NewBuffer(nil)
-	}
+	// } else {
+	// 	body = bytes.NewBuffer(nil)
+	// }
 
 	req, err := httpNewRequest(method, url, body)
 	if err != nil {

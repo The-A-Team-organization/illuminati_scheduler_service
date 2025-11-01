@@ -10,7 +10,8 @@ func main() {
    	c := cron.New()
 
 	
-	c.AddFunc("@hourly", func() { callendpoints.CloseVotes() })
+	//c.AddFunc("@hourly", func() { callendpoints.CloseVotes() })
+    c.AddFunc("@every 10s", func() { callendpoints.CloseVotes() })
 
 	
 	c.AddFunc("@daily", func() { callendpoints.SetInquisitor() })
