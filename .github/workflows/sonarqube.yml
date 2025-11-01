@@ -15,7 +15,7 @@ jobs:
         with:
           workflow: sonarqube.yml
           token: ${{ secrets.GH_TOKEN }}
-          repo: The-A-Team-organization/illuminati_email_service
+          repo: The-A-Team-organization/illuminati_scheduler_service
           ref: main
       - name: Wait 1m
         if: github.ref != 'refs/heads/main'
