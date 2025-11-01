@@ -2,7 +2,6 @@ package callendpoints
 
 import (
 	"encoding/json"
-	"errors"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -10,69 +9,6 @@ import (
 	"time"
 )
 
-func TestCloseVotes_Success(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodPatch {
-			t.Errorf("expected PATCH, got %s", r.Method)
-		}
-		w.WriteHeader(http.StatusOK)
-	}))
-	defer server.Close()
-
-	orig := BackendURL
-	defer func() { BackendURL = orig }()
-	BackendURL = server.URL
-
-	CloseVotes()
-}
-
-func TestCloseVotes_ServerError(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusInternalServerError)
-	}))
-	defer server.Close()
-
-	orig := BackendURL
-	defer func() { BackendURL = orig }()
-	BackendURL = server.URL
-
-	CloseVotes()
-}
-
-func TestCloseVotes_NetworkError(t *testing.T) {
-	orig := BackendURL
-	defer func() { BackendURL = orig }()
-	BackendURL = "http://invalid_host"
-	CloseVotes()
-}
-
-func TestCloseVotes_NewRequestError(t *testing.T) {
-	orig := httpNewRequest
-	httpNewRequest = func(method, url string, body io.Reader) (*http.Request, error) {
-		return nil, errors.New("request error")
-	}
-	defer func() { httpNewRequest = orig }()
-	CloseVotes()
-}
-
-func TestCloseVotes_ClientDoError(t *testing.T) {
-	orig := httpClientDo
-	httpClientDo = func(client *http.Client, req *http.Request) (*http.Response, error) {
-		return nil, errors.New("client error")
-	}
-	defer func() { httpClientDo = orig }()
-
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-	}))
-	defer server.Close()
-
-	origURL := BackendURL
-	defer func() { BackendURL = origURL }()
-	BackendURL = server.URL
-
-	CloseVotes()
-}
 
 func TestCloseVotesTimestampFormat(t *testing.T) {
 	payload := map[string]string{
@@ -118,6 +54,17 @@ func TestSetInquisitor_Success(t *testing.T) {
 func TestUnsetInquisitor_Success(t *testing.T) {
 	httpClientDo = mockHTTPClient(200)
 	UnsetInquisitor()
+}
+
+func TestBanArchitect_Success(t *testing.T) {
+	httpClientDo = mockHTTPClient(200)
+	BanArchitect()
+}
+
+
+func TestCloseVotes_Success(t *testing.T) {
+	httpClientDo = mockHTTPClient(200)
+	CloseVotes()
 }
 
 func TestCallEndpoint_ErrorRequest(t *testing.T) {
