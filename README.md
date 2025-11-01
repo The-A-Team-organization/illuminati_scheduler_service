@@ -8,11 +8,16 @@ This microservice periodically calls specific backend API endpoints via HTTP req
 
 Currently, the main task implemented:
 
-- `CloseVotes` — sends a `POST` request to the backend at `http://host.docker.internal:8000/api/votes/vote_close`  
-  with the parameter `DateOfEnd` in the format `YYYY-MM-DD HH:MM:SS`.
+- `CloseVotes` — sends a `PATCH` request to the backend at `http://host.docker.internal:8000/api/votes/vote_close`  
+  with the parameter `date_of_end` in the format `YYYY-MM-DD HH:MM:SS`.
 
----
+- `SetInquisitor` — sends a `PATCH` request to the backend at `http://backend:8000/api/votes/manage_inquisitor/`  
+  to set the inquisitor.
 
-## TODO
+- `UnsetInquisitor` — sends a `DELETE` request to the backend at `http://backend:8000/api/votes/manage_inquisitor/`  
+  to unset the inquisitor.
 
-Add other endpoints (SetInquisitor, NewPassword)!
+- `BanArchitect` — sends a `DELETE` request to the backend at `http://backend:8000/api/ban_architect/`  
+  with the parameter `architect_id` and `reason`.
+
+- `NewEntryPassword` — sends a `POST` request to the backend at `http://backend:8000/api/entry_password/`
