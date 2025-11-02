@@ -20,11 +20,11 @@ func main() {
 	
 	c.AddFunc("0 20 * * *", func() { callendpoints.UnsetInquisitor() })
 
-    //c.AddFunc("@every 15s", func() { callendpoints.BanArchitect() })
-    c.AddFunc("@every 42d", func() { callendpoints.BanArchitect() })
+    c.AddFunc("@every 15s", func() { callendpoints.BanArchitect() })
+    //c.AddFunc("@every 42d", func() { callendpoints.BanArchitect() })
     
     c.AddFunc("@daily", func() { callendpoints.NewEntryPassword() })
-    //c.AddFunc("@every 50s", func() { callendpoints.NewEntryPassword() })
+    //c.AddFunc("@every 10s", func() { callendpoints.NewEntryPassword() })
 
 	c.Start()
 

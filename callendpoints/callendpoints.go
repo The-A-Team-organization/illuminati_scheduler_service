@@ -13,7 +13,7 @@ var (
 	EndpointVotesClose = "/api/votes/vote_close/"
     EndpointManageInq  = "/api/votes/manage_inquisitor/"
     EndpointBanArchitect = "/api/votes/ban_architect/"
-    EndpointEntryPassword = "/api/entry_password/"
+    EndpointEntryPassword = "/api/password/new_entry_password/"
 
 
 	
